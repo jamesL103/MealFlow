@@ -38,24 +38,37 @@ router.get("/:mealName", async (req, res) => {
     let html = "";
 
     if (mealObj == null) {
-        html = "No results found";
+        html = "No foods in the meal";
     } else {
         html += `<table><thead><th>Food</th><th>Calories</th></thead>`;
-        const apiRequestRoute = "/v1/food/"
-        for (const id of mealObj.foods) {
-            const options = {
+        const apiRequestRoute = "/v1/foods"
+        const options = {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                     "X-Api-Key" : process.env.API_KEY
                 }
-            };
-            let apiResponse = await fetch(process.env.API_SERVER + apiRequestRoute + id + "?format=abridged", options);
-            console.log(apiResponse);
-            let foodItem = await apiResponse.json();
+        };
+
+        //create the get url parameters containing the FDC ID for each food item
+        let idParam = "?fdcIds=";
+
+        for (const id of mealObj.foods) {
+            idParam += id + ",";
+        }
+        idParam = idParam.slice(0, idParam.length - 1);
+
+        //GET request the array of food items
+        let apiResponse = await fetch(process.env.API_SERVER + apiRequestRoute + idParam + "&format=abridged&nutrients=208", options);
+        console.log(apiResponse);
+        let foodItems = await apiResponse.json();
+
+        //add every food item into the html list display
+        for (const foodItem of foodItems) {
+            
             console.log(foodItem);
 
-            html += `<tr><td>${foodItem.description}</td><td>0</td></tr>`
+            html += `<tr><td>${foodItem.description}</td><td>${foodItem.foodNutrients[0].amount}</td></tr>`
         }
 
         html += "</table>";
