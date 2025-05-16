@@ -17,6 +17,11 @@ app.get("/", (req, res) => {
     res.sendFile("index.html");
 });
 
+app.get("/createMeal", (req,res) => {
+
+    res.sendFile("createMeal.html");
+});
+
 
 app.listen(port, () => {
 
