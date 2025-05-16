@@ -4,6 +4,7 @@ const app = express();
 const port = 5000;
 const staticPath = "static";
 const path = require("path");
+const mealViewRouter = require("./mealViewRouter");
 
 const publicPath = path.resolve(__dirname, staticPath);
 app.use(express.static(publicPath));
