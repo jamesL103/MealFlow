@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset ="utf-8">
+    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal View</title>
+</head>
+
+<body>
+    <h1>Currently viewing meal: <%= name %></h1>
+
+    <h2>Foods:</h2>
+    <div id="foodList">
+        <%-foodListHtml%>
+    </div><br>
+
+
+    <a href="/viewMeals">Back to all meals</a>
+    
+</body>
+
+</html>
