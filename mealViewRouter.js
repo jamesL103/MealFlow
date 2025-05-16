@@ -12,7 +12,13 @@ const {MongoClient, ServerApiVersion} = require("mongodb");
 
 router.get("/", async (req, res) => {
     const list = await getMenuList();
-    let html = `Found ${list.length} items<br>`;
+    let html = `Found ${list.length} item`;
+    if (list.length != 1) {
+        html += "s";
+    }
+    html += "<br>";
+
+
     for (const menuObj of list) {
         html += `<a href="/viewMeals/${menuObj.name}">${menuObj.name}</a><br>`;
     }
@@ -21,7 +27,7 @@ router.get("/", async (req, res) => {
         listHtml: html
     };
 
-    res.render("menu", vars);
+    res.render("meals", vars);
 });
 
 //returns an array of objects storing meal names and ids

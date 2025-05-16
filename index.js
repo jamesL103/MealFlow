@@ -10,7 +10,7 @@ const publicPath = path.resolve(__dirname, staticPath);
 app.use(express.static(publicPath));
 
 app.set("view engine", "ejs");
-app.set("views", path.resolve(__dirname), "templates");
+app.set("views", path.resolve(__dirname, "templates"));
 app.use("/viewMeals", mealViewRouter);
 
 app.get("/", (req, res) => {
