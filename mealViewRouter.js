@@ -8,10 +8,12 @@ require("dotenv").config({
 
 const {MongoClient, ServerApiVersion} = require("mongodb");
 
+const http = require("http");
+
 
 
 router.get("/", async (req, res) => {
-    const list = await getMenuList();
+    const list = await getMealList();
     let html = `Found ${list.length} item`;
     if (list.length != 1) {
         html += "s";
@@ -30,8 +32,45 @@ router.get("/", async (req, res) => {
     res.render("meals", vars);
 });
 
+router.get("/:mealName", async (req, res) => {
+    const {mealName} = req.params;
+    const mealObj = await getMeal(mealName);
+    let html = "";
+
+    if (mealObj == null) {
+        html = "No results found";
+    } else {
+        html += `<table><thead><th>Food</th><th>Calories</th></thead>`;
+        const apiRequestRoute = "/v1/food/"
+        for (const id of mealObj.foods) {
+            const options = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Api-Key" : process.env.API_KEY
+                }
+            };
+            let apiResponse = await fetch(process.env.API_SERVER + apiRequestRoute + id + "?format=abridged", options);
+            console.log(apiResponse);
+            let foodItem = await apiResponse.json();
+            console.log(foodItem);
+
+            html += `<tr><td>${foodItem.description}</td><td>0</td></tr>`
+        }
+
+        html += "</table>";
+    }
+
+    const vars = {
+        name: mealName,
+        foodListHtml : html
+    }
+
+    res.render("viewMeal", vars);
+});
+
 //returns an array of objects storing meal names and ids
-async function getMenuList() {
+async function getMealList() {
     const uri = process.env.MONGO_CONNECTION_STRING;
     const client = new MongoClient(uri, {serverApi: ServerApiVersion.v1});
 
@@ -45,6 +84,25 @@ async function getMenuList() {
         return toReturn;
     } catch (e) {
         console.error(e);
+    }
+}
+
+//returns a meal object from the database with the specified name
+//returns null if meal with name not found
+async function getMeal(name) {
+    const uri = process.env.MONGO_CONNECTION_STRING;
+    const client = new MongoClient(uri, {serverApi: ServerApiVersion.v1});
+
+    try {
+        await client.connect();
+        const database = client.db(process.env.DATABASE_NAME);
+        const collection = database.collection(process.env.COLLECTION_NAME);
+        const projection = {name: name};
+
+        return await collection.findOne(projection);
+
+    } catch (e) {
+
     }
 }
 
