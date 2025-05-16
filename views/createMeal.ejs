@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset ="utf-8">
+        <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+        <script defer>
+            "use strict";
+            const {search} = require("./apiSearch");
+
+            const searchInput = document.getElementById("searchInput");
+
+            async function searchFood() {
+                const resultArray = await search(searchInput.value);
+                searchInput.value="";
+            }
+
+        </script>
+	    <title>Create New Meal</title>
+    </head>
+
+    <body>
+        <h1>Create new Meal</h1>
+
+        <h2>Add Item:</h2>
+        <fieldset>
+            <input type="text" id="searchInput"><br>
+            <button id="searchButton" onclick=searchFood>Search</button>
+        </fieldset>
+        <div id="searchResults"></div>
+
+        <h2>Current Foods:</h2>
+        <div id="foodlist"></div>
+
+    </body>
+
+</html>

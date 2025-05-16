@@ -8,8 +8,6 @@ require("dotenv").config({
 
 const {MongoClient, ServerApiVersion} = require("mongodb");
 
-const http = require("http");
-
 
 
 router.get("/", async (req, res) => {
