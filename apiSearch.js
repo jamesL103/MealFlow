@@ -11,10 +11,12 @@ async function search(query) {
     const apiRoute = "/v1/foods/search";
     
     const searchBody = {
-        query: query,
         method: "POST",
-        pageSize: 20,
-        pageNumber:1,
+        body : JSON.stringify({
+            query: query,
+            pageSize: 20,
+            pageNumber:1,
+        }),
         headers: {
             "Content-Type" : "application/json",
             "X-Api-Key" : process.env.API_KEY
