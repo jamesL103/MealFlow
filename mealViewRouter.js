@@ -33,6 +33,7 @@ router.get("/", async (req, res) => {
 router.get("/:mealName", async (req, res) => {
     const {mealName} = req.params;
     const mealObj = await getMeal(mealName);
+    console.log(mealObj);
     let html = "";
 
     if (mealObj == null) {
@@ -55,10 +56,10 @@ router.get("/:mealName", async (req, res) => {
             idParam += id + ",";
         }
         idParam = idParam.slice(0, idParam.length - 1);
-
         //GET request the array of food items
         //note: can only accept up to 20 items
         let apiResponse = await fetch(process.env.API_SERVER + apiRequestRoute + idParam + "&format=abridged&nutrients=208", options);
+        console.log(apiResponse);
         let foodItems = await apiResponse.json();
 
         //add every food item into the html list display
@@ -69,8 +70,8 @@ router.get("/:mealName", async (req, res) => {
             html += `<tr><td>${foodItem.description}</td><td>${foodItem.foodNutrients[0].amount}</td></tr>`
         }
 
-        html += "</table>";
-    }
+        html += "</table>"; 
+    } 
 
     const vars = {
         name: mealName,

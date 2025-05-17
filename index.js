@@ -50,7 +50,7 @@ app.post("/createMeal/submit", async (req, res) => {
 
     let mealObj = {
         name: name,
-        foods: foods
+        foods: JSON.parse(foods)
     }
 
     await put(mealObj);
