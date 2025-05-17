@@ -8,6 +8,8 @@ const mealViewRouter = require("./mealViewRouter");
 const bodyParser = require("body-parser");
 const {search} = require("./apiSearch");
 
+const {put} = require("./MongoDBManager");
+
 const publicPath = path.resolve(__dirname, staticPath);
 app.use(express.static(publicPath));
 app.use(bodyParser.urlencoded({extended:false}));
@@ -26,6 +28,7 @@ app.get("/createMeal", (req,res) => {
     res.render("createMeal");
 });
 
+//handle search request
 app.post("/search/", async (req, res) => {
     console.log(req.body);
     const result = await search(req.body.query);
@@ -38,6 +41,21 @@ app.post("/search/", async (req, res) => {
     } else {
         res.send(JSON.stringify(foodsArray));
     }
+});
+
+//handle create form submission
+app.post("/createMeal/submit", async (req, res) => {
+    let {name, foods} = req.body;
+
+    const foodArray=JSON.parse(foods);
+
+    let mealObj = {
+        name: name,
+        foods: foodArray
+    }
+
+    await put(mealObj);
+
 });
 
 

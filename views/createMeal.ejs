@@ -13,12 +13,21 @@
         <h1>Create new Meal</h1>
 
         <fieldset>
-            <form id="mealCreate">
-            <label>Meal Name: <input id="name" name="name"></label><br>
+            <form id="mealCreate" action="/createMeal/submit" method="post">
+            <label>Meal Name: <input id="name" name="name" required></label><br>
             <input name="foods" id="foods" type="hidden" value="[">
-            <button type="submit">Save Meal</button>
+            <button type="submit" onsubmit=formatFoods()>Save Meal</button>
             </form>
         </fieldset>
+
+        <script>
+            //properly format foods hidden input field
+            function formatFoods() {
+                const foods = getElementById("foods");
+                foods.value += "]";
+                return true;
+            }
+        </script>
 
         <h2>Meal Foods</h2>
 
@@ -26,15 +35,14 @@
             <legend>Add Food Item</legend>
             <input type="text" id="searchInput" name="query"><br>
             <button id="searchButton" type="button">Search</button>
+            <button id="tester" type="button" data-foodId="1870455" data-foodName="BURG" onclick=addItemToMealCallback(event)>Add to meal</button>
             <div id="searchResults"></div>
         </fieldset>
         
 
         <h3>Current Foods:</h3>
     
-        <div id="foodlist">
-            <ol></ol>
-        </div>
+        <div id="foodlist"><ol></ol></div>
 
 
         <script>
@@ -63,27 +71,34 @@
                 if (foodArray.length == 0) {
                     searchDisplay.innerHTML = "No results found.";
                 } else {
-                    let display = `<table><thead><th>number</th><th>Food Name</th><th>FDC ID</th></thead>`;
+                    let display = `<table><thead><th>number</th><th>Food Name</th><th>FDC ID</th><th></th></thead>`;
                     let count = 1;
                     for (const foodObj of foodArray) {
                         console.log(foodObj.foodNutrients);
                         display += 
-                            `<tr><td>${count++}</td><td>${foodObj.description}</td><td>${foodObj.fdcId}</td>
-                            <button data-foodId=${foodObj.fdcId} data-foodName=${foodObj.description} onclick=addItemToMealCallback>Add to meal</button></tr>`;
+                            `<tr><td>${count++}</td><td>${foodObj.description}</td><td>${foodObj.fdcId}</td><td>
+                            <id="add${count}" button type="button" data-foodid=${foodObj.fdcId} data-foodname=${foodObj.description} onclick=addItemToMealCallback>Add to meal</button>
+                            </td></tr>`;
                     }
                     searchDisplay.innerHTML = display;
                 }
             }
 
             //called by each add button, adds the button's corresponding food item to the meal
-            function addItemToMealCallback(event) {
-                const name = event.target.dataset.foodName;
-                const id = event.target.dataset.foodId;
+            //foods are stored with their FDC ID
+            function addItemToMealCallback(e) {
+                console.log("attempting to add item to meal");
+                const name = e.target.dataset.foodname;
+                console.log(e.target.dataset);
+                const id = e.target.dataset.foodid;
                 const hiddenInput = document.getElementById("foods");
                 hiddenInput.value += id + ",";
                 const currentFoods = document.getElementById("foodlist");
+                console.log(currentFoods.innerHTML);
                 let display = currentFoods.innerHTML.slice(0, currentFoods.innerHTML.length - 5);
+                
                 display += `<li>${name}</li></ol>`;
+                currentFoods.innerHTML = display;
             }
 
             document.getElementById("searchButton").onclick = searchFood;
