@@ -59,13 +59,12 @@ router.get("/:mealName", async (req, res) => {
         //GET request the array of food items
         //note: can only accept up to 20 items
         let apiResponse = await fetch(process.env.API_SERVER + apiRequestRoute + idParam + "&format=abridged&nutrients=208", options);
-        console.log(apiResponse);
         let foodItems = await apiResponse.json();
 
         //add every food item into the html list display
         for (const foodItem of foodItems) {
             
-            console.log(foodItem);
+            // console.log(foodItem);
 
             html += `<tr><td>${foodItem.description}</td><td>${foodItem.foodNutrients[0].amount}</td></tr>`
         }

@@ -17,6 +17,7 @@
             <label>Meal Name: <input id="name" name="name" required></label><br>
             <input name="foods" id="foods" type="hidden" value="[">
             <button type="submit" onsubmit=formatFoods>Save Meal</button>
+            <button type="button" id="submitTest" onclick=testSubmit()>Sample submit</button>
             </form>
         </fieldset>
 
@@ -33,6 +34,22 @@
                 console.log(foods.value);
                 return true;
             }
+
+            async function testSubmit() {
+                const options = {
+                    method:"POST",
+                    body: JSON.stringify({
+                        name: "testMeal",
+                        foods : [
+                            170329
+                        ]
+                    }),
+                    headers: { 'Content-Type': 'application/json' }
+                }
+
+                await fetch("/createMeal/submit", options);
+            }
+
         </script>
 
         <h2>Meal Foods</h2>

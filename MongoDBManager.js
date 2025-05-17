@@ -8,6 +8,7 @@ const {MongoClient, ServerApiVersion} = require("mongodb");
 
 //puts the meal object into the database
 async function put(mealObj) {
+    console.log(mealObj)
     const uri = process.env.MONGO_CONNECTION_STRING;
     const client = new MongoClient(uri, {serverApi: ServerApiVersion.v1});
     try {
