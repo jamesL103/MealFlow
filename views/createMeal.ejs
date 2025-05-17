@@ -35,7 +35,7 @@
             <legend>Add Food Item</legend>
             <input type="text" id="searchInput" name="query"><br>
             <button id="searchButton" type="button">Search</button>
-            <button id="tester" type="button" data-foodId="1870455" data-foodName="BURG" onclick=addItemToMealCallback(event)>Add to meal</button>
+            <!-- <button id="tester" type="button" data-foodId="1870455" data-foodName="BURG" onclick=addItemToMealCallback(event)>Add to meal</button> -->
             <div id="searchResults"></div>
         </fieldset>
         
@@ -77,7 +77,7 @@
                         console.log(foodObj.foodNutrients);
                         display += 
                             `<tr><td>${count++}</td><td>${foodObj.description}</td><td>${foodObj.fdcId}</td><td>
-                            <id="add${count}" button type="button" data-foodid=${foodObj.fdcId} data-foodname=${foodObj.description} onclick=addItemToMealCallback>Add to meal</button>
+                            <button id="add${count}" type="button" data-foodid=${foodObj.fdcId} data-foodname=${foodObj.description} onclick=addItemToMealCallback(event)>Add to meal</button>
                             </td></tr>`;
                     }
                     searchDisplay.innerHTML = display;
