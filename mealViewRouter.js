@@ -36,7 +36,7 @@ router.get("/:mealName", async (req, res) => {
     console.log(mealObj);
     let html = "";
 
-    if (mealObj == null) {
+    if (mealObj == null || mealObj.foods == undefined || mealObj.foods.length == 0) {
         html = "No foods in the meal";
     } else {
         html += `<table><thead><th>Food</th><th>Calories</th></thead>`;
