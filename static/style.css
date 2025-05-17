@@ -1,0 +1,18 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: darkgrey;
+}
+
+input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+legend {
+    color:aliceblue;
+    font-size: 18px;
+}
+
+fieldset {
+    border-color: gray;
+}

@@ -14,7 +14,7 @@ async function search(query) {
         method: "POST",
         body : JSON.stringify({
             query: query,
-            pageSize: 20,
+            pageSize: 10,
             pageNumber:1,
         }),
         headers: {

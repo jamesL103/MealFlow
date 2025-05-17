@@ -5,6 +5,7 @@
     <head>
         <meta charset ="utf-8">
         <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
 	    <title>Create New Meal</title>
     </head>
 
@@ -14,7 +15,7 @@
         <fieldset>
             <form id="mealCreate">
             <label>Meal Name: <input id="name" name="name"></label><br>
-            <input name="foods" type="hidden">
+            <input name="foods" id="foods" type="hidden" value="[">
             <button type="submit">Save Meal</button>
             </form>
         </fieldset>
@@ -31,11 +32,14 @@
 
         <h3>Current Foods:</h3>
     
-        <div id="foodlist"></div>
+        <div id="foodlist">
+            <ol></ol>
+        </div>
 
 
         <script>
             "use strict";
+            document.getElementById("foods").value = "[";
 
             //callback for search button
             async function searchFood() {
@@ -50,6 +54,8 @@
                 if (result.status == 400) {
                     return;
                 }
+
+                //array containing all retrieved food items
                 const foodArray = await result.json();
                 console.log(foodArray);
 
@@ -57,13 +63,27 @@
                 if (foodArray.length == 0) {
                     searchDisplay.innerHTML = "No results found.";
                 } else {
-                    let display = `<table><thead><th>number</th><th>Food Name</th></thead>`;
+                    let display = `<table><thead><th>number</th><th>Food Name</th><th>FDC ID</th></thead>`;
                     let count = 1;
                     for (const foodObj of foodArray) {
-                        display += `<tr><td>${count++}</td><td>${foodObj.description}</td></tr>`;
+                        console.log(foodObj.foodNutrients);
+                        display += 
+                            `<tr><td>${count++}</td><td>${foodObj.description}</td><td>${foodObj.fdcId}</td>
+                            <button data-foodId=${foodObj.fdcId} data-foodName=${foodObj.description} onclick=addItemToMealCallback>Add to meal</button></tr>`;
                     }
                     searchDisplay.innerHTML = display;
                 }
+            }
+
+            //called by each add button, adds the button's corresponding food item to the meal
+            function addItemToMealCallback(event) {
+                const name = event.target.dataset.foodName;
+                const id = event.target.dataset.foodId;
+                const hiddenInput = document.getElementById("foods");
+                hiddenInput.value += id + ",";
+                const currentFoods = document.getElementById("foodlist");
+                let display = currentFoods.innerHTML.slice(0, currentFoods.innerHTML.length - 5);
+                display += `<li>${name}</li></ol>`;
             }
 
             document.getElementById("searchButton").onclick = searchFood;

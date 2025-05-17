@@ -33,6 +33,8 @@ app.post("/search/", async (req, res) => {
     const foodsArray = result.foods;
     if (result.status == 400) {
         res.status(400).send("Error: " + result.message);
+    } else if (result.error?.code === "OVER_RATE_LIMIT") {
+        res.send("Error: over FDC API rate limit");
     } else {
         res.send(JSON.stringify(foodsArray));
     }
