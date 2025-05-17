@@ -16,15 +16,21 @@
             <form id="mealCreate" action="/createMeal/submit" method="post">
             <label>Meal Name: <input id="name" name="name" required></label><br>
             <input name="foods" id="foods" type="hidden" value="[">
-            <button type="submit" onsubmit=formatFoods()>Save Meal</button>
+            <button type="submit" onsubmit=formatFoods>Save Meal</button>
             </form>
         </fieldset>
 
         <script>
+            window.onsubmit = formatFoods;
             //properly format foods hidden input field
             function formatFoods() {
-                const foods = getElementById("foods");
-                foods.value += "]";
+                const foods = document.getElementById("foods");
+                foods.value = foods.value.trim();
+                if (foods.value.charAt(foods.value.length - 1) == ',') {
+                    foods.value = foods.value.slice(foods.value.length - 1);
+                }
+                foods.value = foods.value + "]";
+                console.log(foods.value);
                 return true;
             }
         </script>
@@ -47,7 +53,6 @@
 
         <script>
             "use strict";
-            document.getElementById("foods").value = "[";
 
             //callback for search button
             async function searchFood() {
@@ -74,10 +79,9 @@
                     let display = `<table><thead><th>number</th><th>Food Name</th><th>FDC ID</th><th></th></thead>`;
                     let count = 1;
                     for (const foodObj of foodArray) {
-                        console.log(foodObj.foodNutrients);
                         display += 
-                            `<tr><td>${count++}</td><td>${foodObj.description}</td><td>${foodObj.fdcId}</td><td>
-                            <button id="add${count}" type="button" data-foodid=${foodObj.fdcId} data-foodname=${foodObj.description} onclick=addItemToMealCallback(event)>Add to meal</button>
+                            `<tr><td>${count++}</td><td>${foodObj.description.trim()}</td><td>${foodObj.fdcId.trim()}</td><td>
+                            <button id="add${count}" type="button" data-foodid=${foodObj.fdcId.trim()} data-foodname=${foodObj.description.trim()} onclick=addItemToMealCallback(event)>Add to meal</button>
                             </td></tr>`;
                     }
                     searchDisplay.innerHTML = display;
@@ -104,6 +108,8 @@
             document.getElementById("searchButton").onclick = searchFood;
 
         </script>
+
+        <a href="/">Back to main menu</a>
 
     </body>
 

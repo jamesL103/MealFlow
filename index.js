@@ -46,7 +46,7 @@ app.post("/search/", async (req, res) => {
 //handle create form submission
 app.post("/createMeal/submit", async (req, res) => {
     let {name, foods} = req.body;
-
+    console.log(foods);
     const foodArray=JSON.parse(foods);
 
     let mealObj = {
@@ -56,6 +56,7 @@ app.post("/createMeal/submit", async (req, res) => {
 
     await put(mealObj);
 
+    res.render("createMealConfirm");
 });
 
 
