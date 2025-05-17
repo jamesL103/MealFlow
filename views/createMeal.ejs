@@ -5,34 +5,73 @@
     <head>
         <meta charset ="utf-8">
         <meta name ="viewport" content="width=device-width, initial-scale=1.0">
-        <script defer>
-            "use strict";
-            const {search} = require("./apiSearch");
-
-            const searchInput = document.getElementById("searchInput");
-
-            async function searchFood() {
-                const resultArray = await search(searchInput.value);
-                searchInput.value="";
-            }
-
-        </script>
 	    <title>Create New Meal</title>
     </head>
 
     <body>
         <h1>Create new Meal</h1>
 
-        <h2>Add Item:</h2>
         <fieldset>
-            <input type="text" id="searchInput"><br>
-            <button id="searchButton" onclick=searchFood>Search</button>
+            <form id="mealCreate">
+            <label>Meal Name: <input id="name" name="name"></label><br>
+            <input name="foods" type="hidden">
+            <button type="submit">Save Meal</button>
+            </form>
         </fieldset>
-        <div id="searchResults"></div>
 
-        <h2>Current Foods:</h2>
+        <h2>Meal Foods</h2>
+
+        <fieldset>
+            <legend>Add Food Item</legend>
+            <input type="text" id="searchInput" name="query"><br>
+            <button id="searchButton" type="button">Search</button>
+            <div id="searchResults"></div>
+        </fieldset>
+        
+
+        <h3>Current Foods:</h3>
+    
         <div id="foodlist"></div>
 
+
+        <script>
+            "use strict";
+
+            //callback for search button
+            async function searchFood() {
+                const options = {
+                    method: "POST",
+                    body: JSON.stringify({query: document.querySelector("#searchInput").value}),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                };
+                const result = await fetch("http://localhost:5000/search", options);
+                if (result.status == 400) {
+                    return;
+                }
+                const foodArray = await result.json();
+                console.log(foodArray);
+
+                const searchDisplay = document.getElementById("searchResults");
+                if (foodArray.length == 0) {
+                    searchDisplay.innerHTML = "No results found.";
+                } else {
+                    let display = `<table><thead><th>number</th><th>Food Name</th></thead>`;
+                    let count = 1;
+                    for (const foodObj of foodArray) {
+                        display += `<tr><td>${count++}</td><td>${foodObj.description}</td></tr>`;
+                    }
+                    searchDisplay.innerHTML = display;
+                }
+            }
+
+            document.getElementById("searchButton").onclick = searchFood;
+
+        </script>
+
     </body>
+
+    
 
 </html>
