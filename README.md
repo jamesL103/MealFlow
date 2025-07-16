@@ -1,4 +1,4 @@
-# Meal Planner
+# MealFlow
 
 Submitted by: James Liao (directory id: jliao125)  
 Group Members: James Liao (jliao125)  
