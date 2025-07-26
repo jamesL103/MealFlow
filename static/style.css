@@ -1,6 +1,28 @@
+:root {
+    --bg: #3E3939;
+    --text-default: #E6FDFF;
+    --link: #FF8C42;
+    --visited: #dbc253;
+    --button-bg: #6C8EAD;
+    --large-text: 18pt;
+}
+
 body {
     font-family: "Montserrat", sans-serif;
-    background-color: darkgrey;
+    color: var(--text-default);
+    background-color: var(--bg);
+}
+
+.large-text {
+    font-size: var(--large-text);
+}
+
+a {
+    color: var(--link);
+}
+
+a:visited {
+    color: var(--visited);
 }
 
 input {
@@ -14,12 +36,26 @@ legend {
 }
 
 fieldset {
-    border-color: gray;
+    border-color: var(--text-default);
+
+}
+
+button {
+    border-radius: 8px;
+    border-style: none;
+    background-color: var(--button-bg);
+    text-align: center;
+    color: var(--text-default);
+    padding: 10px 10px 10px 10px;
+}
+
+.delete {
+    background-color: red;
 }
 
 .searchTable{
     border-style: solid;
-    border-color: black;
+    border-color: gray;
     border-width: 2px;
 }
 

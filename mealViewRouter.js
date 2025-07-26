@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
 
     for (const menuObj of list) {
         html += `<tr>
-        <td><a href="/viewMeals/meal/${menuObj.name}">${menuObj.name}</a></td><td><button type="button" data-id="${menuObj._id}" onclick=deleteButtonCallback(event)>Delete Meal</button>
+        <td><a href="/viewMeals/meal/${menuObj.name}">${menuObj.name}</a></td><td><button type="button" class="delete" data-id="${menuObj._id}" onclick=deleteButtonCallback(event)>Delete Meal</button>
         </tr>
         `;
     }
