@@ -6,6 +6,30 @@
         <meta name ="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
 	    <title>View Existing Meals</title>
+        <script>
+            "use strict";
+
+            function deleteButtonCallback(e) {
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: e.target.dataset.id
+                    })
+                }
+                fetch("viewMeals/deleteEntry", options)
+                .then((result)=> {
+                    console.log(result);
+                    location.reload();
+                })
+                .catch((reason) => {
+                    console.error("Couldn't Delete Meal:" + reason);
+                });
+            }
+
+        </script>
     </head>
 
     <body>

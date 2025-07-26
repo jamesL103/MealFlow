@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
+const {_ ,remove} = require("./MongoDBManager")
 require("dotenv").config({
     path: path.resolve(__dirname, "env/.env")
 });
@@ -16,23 +17,50 @@ router.get("/", async (req, res) => {
     if (list.length != 1) {
         html += "s";
     }
-    html += "<br>";
-
+    html += "<br><table>";
 
     for (const menuObj of list) {
-        html += `<a href="/viewMeals/${menuObj.name}">${menuObj.name}</a><br>`;
+        html += `<tr>
+        <td><a href="/viewMeals/meal/${menuObj.name}">${menuObj.name}</a></td><td><button type="button" data-id="${menuObj._id}" onclick=deleteButtonCallback(event)>Delete Meal</button>
+        </tr>
+        `;
     }
 
+    html += "</table>"
+
     const vars = {
-        listHtml: html
+        listHtml: html,
+        list: list
     };
 
     res.render("meals", vars);
 });
 
-router.get("/:mealName", async (req, res) => {
+
+
+router.post("/deleteEntry", (req, res) => {
+    const id = req.body.id;
+    console.log("Received delete request for " + id);
+    res.send(new Promise((resolve, reject) => {
+        remove(id).then((result)=> {
+            if (result.deletedCount == 1) {
+                console.log("Successfully deleted entry " + id);
+                resolve({deletedCount: result.deletedCount});
+            } else {
+                console.log("No documents matched query. Failed to delete entry " + id);
+                reject("Failed to delete entry " + id);
+            }
+        }).catch((reason)=> {
+            console.log("Error: Couldn't delete entry: " + reason);
+        });
+    }));
+    
+});
+
+router.get("/meal/:mealName", async (req, res) => {
     const {mealName} = req.params;
     const mealObj = await getMeal(mealName);
+    console.log("Displaying Meal: ");
     console.log(mealObj);
     let html = "";
 
@@ -80,6 +108,8 @@ router.get("/:mealName", async (req, res) => {
 
     res.render("viewMeal", vars);
 });
+
+
 
 //returns an array of objects storing meal names and ids
 async function getMealList() {
