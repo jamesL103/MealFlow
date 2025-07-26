@@ -17,8 +17,9 @@ fieldset {
     border-color: gray;
 }
 
-td, th, table{
+.searchTable{
     border-style: solid;
     border-color: black;
     border-width: 2px;
 }
+
