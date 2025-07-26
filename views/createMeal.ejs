@@ -14,7 +14,7 @@
 
         <fieldset>
             <form id="mealCreate" action="/createMeal/submit" method="post">
-            <label>Meal Name: <input id="name" name="name" required></label><br>
+            <label>Meal Name: <input id="name" name="name" required placeholder="enter name"></label><br>
             <input name="foods" id="foods" type="hidden" value="[">
             <button type="submit">Save Meal</button>
             <!-- <button type="button" id="submitTest" onclick=testSubmit()>Sample submit</button> -->
@@ -55,7 +55,7 @@
 
         <fieldset>
             <legend>Add Food Item</legend>
-            <input type="text" id="searchInput" name="query"><br>
+            <input type="text" id="searchInput" name="query" placeholder="enter a food name"><br>
             <button id="searchButton" type="button">Search</button>
             <!-- <button id="tester" type="button" data-foodId="1870455" data-foodName="BURG" onclick=addItemToMealCallback(event)>Add to meal</button> -->
             <div id="searchResults"></div>
@@ -92,7 +92,7 @@
                 if (foodArray.length == 0) {
                     searchDisplay.innerHTML = "No results found.";
                 } else {
-                    let display = `<table><thead><th>number</th><th>Food Name</th><th>FDC ID</th><th></th></thead>`;
+                    let display = `<table class="searchTable"><thead><th>number</th><th>Food Name</th><th>FDC ID</th><th></th></thead>`;
                     let count = 1;
                     for (const foodObj of foodArray) {
                         display += 
